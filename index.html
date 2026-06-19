@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>World Hypertension Summit 2019 – CME Program</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #0A2342;
+    --teal: #0B7A75;
+    --teal-light: #E1F5F4;
+    --teal-mid: #1D9E95;
+    --gold: #C5921A;
+    --gold-light: #FEF8E8;
+    --white: #FFFFFF;
+    --off: #F7F8FA;
+    --border: #E2E6EA;
+    --text: #1A2332;
+    --muted: #6B7280;
+    --danger: #DC2626;
+    --success: #059669;
+  }
+  body { font-family: 'Inter', sans-serif; background: var(--off); color: var(--text); font-size: 15px; line-height: 1.6; }
+
+  /* NAV */
+  .top-bar { background: var(--navy); color: #fff; padding: 0 2rem; display: flex; align-items: center; gap: 1.5rem; }
+  .top-bar .logo { display: flex; align-items: center; gap: 10px; padding: 1rem 0; }
+  .logo-mark { width: 42px; height: 42px; background: var(--teal); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+  .logo-mark svg { width: 26px; height: 26px; fill: none; stroke: #fff; stroke-width: 2; }
+  .logo-text h1 { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.05em; text-transform: uppercase; }
+  .logo-text p { font-size: 11px; color: rgba(255,255,255,0.6); }
+  .nav-tabs { margin-left: auto; display: flex; gap: 0; }
+  .nav-tab { background: none; border: none; color: rgba(255,255,255,0.65); font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; padding: 0 1.25rem; height: 60px; cursor: pointer; border-bottom: 3px solid transparent; transition: all 0.15s; letter-spacing: 0.02em; }
+  .nav-tab:hover { color: #fff; }
+  .nav-tab.active { color: var(--teal-mid); border-bottom-color: var(--teal-mid); }
+
+  /* DELEGATE BAR */
+  .delegate-bar { background: var(--teal-light); border-bottom: 1px solid #b2dfdb; padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1rem; font-size: 13px; }
+  .delegate-bar.logged-in { background: #E8F5E9; border-color: #A5D6A7; }
+  .delegate-bar label { color: var(--teal); font-weight: 600; }
+  .delegate-bar input { border: 1px solid #b2dfdb; border-radius: 6px; padding: 5px 10px; font-family: inherit; font-size: 13px; color: var(--text); background: #fff; width: 200px; }
+  .btn-join { background: var(--teal); color: #fff; border: none; border-radius: 6px; padding: 6px 16px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .btn-join:hover { background: var(--teal-mid); }
+  .delegate-info { display: flex; align-items: center; gap: 8px; }
+  .delegate-avatar { width: 30px; height: 30px; border-radius: 50%; background: var(--teal); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; }
+  .btn-logout { background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 4px 12px; font-size: 12px; cursor: pointer; font-family: inherit; }
+
+  /* MAIN */
+  .main { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .page { display: none; }
+  .page.active { display: block; }
+
+  /* AGENDA */
+  .day-header { background: var(--teal); color: #fff; padding: 10px 20px; border-radius: 8px; font-size: 14px; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
+  .day-header .day-icon { font-size: 18px; }
+  .session-block { background: #fff; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 1rem; overflow: hidden; }
+  .session-header { background: #F0FAFA; padding: 10px 16px; border-bottom: 1px solid var(--border); }
+  .session-title { font-weight: 700; color: var(--navy); font-size: 14px; }
+  .session-chairs { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+  .agenda-row { display: grid; grid-template-columns: 130px 1fr auto; gap: 12px; align-items: start; padding: 10px 16px; border-bottom: 1px solid #F3F4F6; font-size: 13px; }
+  .agenda-row:last-child { border-bottom: none; }
+  .agenda-row.break-row { background: var(--gold-light); }
+  .agenda-row.special { background: #EFF6FF; }
+  .time-col { color: var(--teal); font-weight: 600; font-size: 12px; padding-top: 1px; }
+  .talk-col { color: var(--text); }
+  .talk-col strong { display: block; margin-bottom: 2px; line-height: 1.4; }
+  .talk-col .speaker { color: var(--muted); font-size: 12px; }
+  .qr-btn { background: none; border: 1px solid var(--teal); color: var(--teal); border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer; white-space: nowrap; font-family: inherit; }
+  .qr-btn:hover { background: var(--teal); color: #fff; }
+
+  /* QR MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: #fff; border-radius: 16px; padding: 2rem; max-width: 360px; width: 90%; text-align: center; position: relative; }
+  .modal h3 { font-size: 16px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .modal p { font-size: 12px; color: var(--muted); margin-bottom: 1rem; }
+  #qr-container { display: flex; justify-content: center; margin-bottom: 1rem; }
+  .modal-close { position: absolute; top: 12px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--muted); }
+  .qr-url { font-size: 11px; color: var(--teal); word-break: break-all; }
+
+  /* Q&A */
+  .qa-layout { display: grid; grid-template-columns: 240px 1fr; gap: 1.5rem; }
+  .session-list { }
+  .session-list-item { background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; margin-bottom: 8px; cursor: pointer; font-size: 13px; transition: all 0.15s; }
+  .session-list-item:hover { border-color: var(--teal); }
+  .session-list-item.active { border-color: var(--teal); background: var(--teal-light); }
+  .session-list-item .si-day { font-size: 10px; text-transform: uppercase; color: var(--teal); font-weight: 700; letter-spacing: 0.05em; }
+  .session-list-item .si-name { font-weight: 600; color: var(--navy); margin-top: 2px; }
+
+  .qa-panel { }
+  .qa-panel-head { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .qa-panel-head h2 { font-size: 16px; font-weight: 700; color: var(--navy); }
+  .qa-panel-head p { font-size: 12px; color: var(--muted); margin-top: 3px; }
+  .qa-count-badge { display: inline-block; background: var(--teal); color: #fff; border-radius: 20px; padding: 2px 10px; font-size: 12px; font-weight: 700; margin-left: 8px; }
+
+  .post-question { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 1rem; }
+  .post-question textarea { width: 100%; border: 1px solid var(--border); border-radius: 8px; padding: 10px; font-family: inherit; font-size: 13px; resize: vertical; min-height: 80px; color: var(--text); }
+  .post-question textarea:focus { outline: none; border-color: var(--teal); }
+  .post-question .post-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+  .post-question .char-count { font-size: 11px; color: var(--muted); }
+  .btn-post { background: var(--teal); color: #fff; border: none; border-radius: 8px; padding: 8px 20px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: inherit; }
+  .btn-post:hover { background: var(--teal-mid); }
+  .btn-post:disabled { background: #ccc; cursor: not-allowed; }
+
+  .question-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1rem 1.25rem; margin-bottom: 10px; display: flex; gap: 12px; }
+  .upvote-col { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .upvote-btn { background: none; border: 1.5px solid var(--border); border-radius: 8px; width: 40px; height: 36px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; font-size: 16px; }
+  .upvote-btn:hover { border-color: var(--teal); background: var(--teal-light); }
+  .upvote-btn.voted { background: var(--teal-light); border-color: var(--teal); }
+  .upvote-count { font-size: 14px; font-weight: 700; color: var(--teal); }
+  .q-body { flex: 1; }
+  .q-text { font-size: 14px; color: var(--text); line-height: 1.5; margin-bottom: 8px; }
+  .q-meta { display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--muted); }
+  .q-author-chip { background: #EFF6FF; color: #1D4ED8; border-radius: 12px; padding: 2px 10px; font-weight: 600; }
+  .q-time { color: var(--muted); }
+  .answered-badge { background: #D1FAE5; color: #065F46; border-radius: 12px; padding: 2px 10px; font-size: 11px; font-weight: 600; }
+  .btn-mark-answered { background: none; border: 1px solid #10B981; color: #059669; border-radius: 6px; padding: 3px 10px; font-size: 11px; cursor: pointer; font-family: inherit; margin-left: auto; }
+
+  .no-session-msg { text-align: center; padding: 3rem; color: var(--muted); font-size: 14px; }
+  .login-prompt { background: var(--gold-light); border: 1px solid #F59E0B; border-radius: 10px; padding: 1rem 1.25rem; font-size: 13px; color: #92400E; margin-bottom: 1rem; }
+
+  /* POLLS */
+  .poll-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 1.25rem; margin-bottom: 1rem; }
+  .poll-card h3 { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+  .poll-card .poll-session { font-size: 11px; color: var(--teal); font-weight: 600; margin-bottom: 1rem; }
+  .poll-option { margin-bottom: 8px; }
+  .poll-option-btn { width: 100%; text-align: left; background: var(--off); border: 1.5px solid var(--border); border-radius: 8px; padding: 10px 14px; font-family: inherit; font-size: 13px; cursor: pointer; transition: all 0.15s; position: relative; overflow: hidden; }
+  .poll-option-btn:hover { border-color: var(--teal); }
+  .poll-option-btn.selected { border-color: var(--teal); background: var(--teal-light); }
+  .poll-bar { position: absolute; left: 0; top: 0; height: 100%; background: rgba(11,122,117,0.08); border-radius: 8px; transition: width 0.5s ease; }
+  .poll-label { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: center; }
+  .poll-pct { font-weight: 700; color: var(--teal); font-size: 12px; }
+  .poll-footer { font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+  /* PAGE HEADER */
+  .page-hero { background: linear-gradient(135deg, var(--navy) 0%, #1A3A5C 100%); color: #fff; border-radius: 14px; padding: 2rem 2.5rem; margin-bottom: 2rem; position: relative; overflow: hidden; }
+  .page-hero::after { content: ''; position: absolute; right: -40px; top: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(11,122,117,0.15); }
+  .page-hero h2 { font-size: 22px; font-weight: 700; }
+  .page-hero p { font-size: 13px; color: rgba(255,255,255,0.7); margin-top: 6px; }
+  .hero-dates { display: flex; gap: 1rem; margin-top: 1rem; }
+  .hero-date-chip { background: rgba(255,255,255,0.12); border-radius: 20px; padding: 4px 14px; font-size: 12px; font-weight: 600; }
+
+  /* TABS within Q&A/Polls */
+  .inner-tabs { display: flex; gap: 4px; margin-bottom: 1rem; }
+  .inner-tab { background: none; border: 1.5px solid var(--border); border-radius: 8px; padding: 6px 16px; font-family: inherit; font-size: 13px; cursor: pointer; color: var(--muted); }
+  .inner-tab.active { border-color: var(--teal); background: var(--teal-light); color: var(--teal); font-weight: 600; }
+
+  /* ALERTS */
+  .alert { border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 1rem; }
+  .alert-success { background: #D1FAE5; color: #065F46; border: 1px solid #6EE7B7; }
+  .alert-warn { background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; }
+
+  .sort-bar { display: flex; gap: 8px; align-items: center; margin-bottom: 1rem; font-size: 12px; color: var(--muted); }
+  .sort-btn { background: none; border: 1px solid var(--border); border-radius: 6px; padding: 4px 12px; font-family: inherit; font-size: 12px; cursor: pointer; }
+  .sort-btn.active { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+
+  @media (max-width: 700px) {
+    .qa-layout { grid-template-columns: 1fr; }
+    .nav-tab span { display: none; }
+    .agenda-row { grid-template-columns: 110px 1fr; }
+    .agenda-row .qr-btn { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-bar">
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </div>
+    <div class="logo-text">
+      <h1>The Hypertension Summit</h1>
+      <p>World Hypertension League CME Program 2019</p>
+    </div>
+  </div>
+  <nav class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('agenda', this)">📋 <span>Agenda</span></button>
+    <button class="nav-tab" onclick="showPage('qa', this)">💬 <span>Q&A</span></button>
+    <button class="nav-tab" onclick="showPage('polls', this)">📊 <span>Polls</span></button>
+  </nav>
+</div>
+
+<!-- DELEGATE BAR -->
+<div class="delegate-bar" id="delegateBar">
+  <label>Join as delegate:</label>
+  <input type="text" id="delegateName" placeholder="Full name" />
+  <input type="email" id="delegateEmail" placeholder="Email address" />
+  <button class="btn-join" onclick="loginDelegate()">Join →</button>
+  <span style="font-size:12px;color:#666;margin-left:auto;">Or scan session QR code to join directly</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+  <!-- ===== AGENDA PAGE ===== -->
+  <div id="page-agenda" class="page active">
+    <div class="page-hero">
+      <h2>World Hypertension League CME Program</h2>
+      <p>Venue: Hypertension Summit 2019 · Get to the heart of knowledge</p>
+      <div class="hero-dates">
+        <span class="hero-date-chip">📅 Day 1 – Friday, July 12</span>
+        <span class="hero-date-chip">📅 Day 2 – Saturday, July 13</span>
+        <span class="hero-date-chip">📅 Day 3 – Sunday, July 14</span>
+      </div>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-header">
+      <span class="day-icon">🗓</span> Day 1 – Friday, July 12, 2019
+    </div>
+    <div class="session-block">
+      <div class="session-header">
+        <div class="session-title">Opening &amp; Welcome</div>
+        <div class="session-chairs">Chairpersons: Dr. Sujay Renga / Dr. Arup DasBiswas / Dr. I. Sathyamurthy / Dr. Peeyush Jain</div>
+      </div>
+      <div class="agenda-row"><div class="time-col">2:00–2:10 PM</div><div class="talk-col"><strong>Greetings from IPCA – blood pressure control in the community</strong><span class="speaker">IPCA</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">2:10–2:20 PM</div><div class="talk-col"><strong>Welcome and History of the Hypertension Summit 2019</strong><span class="speaker">Dr. C. Venkata S. Ram, Director of the Hypertension Summit</span></div><div></div></div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-header">
+        <div class="session-title">Session I</div>
+        <div class="session-chairs">Chairpersons: Dr. Sujay Renga / Dr. Arup DasBiswas / Dr. I. Sathyamurthy / Dr. Peeyush Jain</div>
+      </div>
+      <div class="agenda-row"><div class="time-col">2:20–2:30 PM</div><div class="talk-col"><strong>Scope of the session</strong><span class="speaker">Dr. Nakul Sinha, Co-Director of the Hypertension Summit</span></div><button class="qr-btn" onclick="showQR('Session I – Day 1','s1d1')">QR</button></div>
+      <div class="agenda-row"><div class="time-col">2:30–2:50 PM</div><div class="talk-col"><strong>The burden of cardiovascular disease in Indian youth: A health-economics perspective</strong><span class="speaker">Dr. Ajay Kumar Sinha</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">2:50–3:10 PM</div><div class="talk-col"><strong>Beta Blockers in Hypertension: Selected considerations 2019</strong><span class="speaker">Dr. Tiny Nair</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">3:10–3:30 PM</div><div class="talk-col"><strong>Effect of mild elevation in BP on stroke, MI &amp; HF</strong><span class="speaker">Dr. Dilip Kumar</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">3:30–3:50 PM</div><div class="talk-col"><strong>Sulphonylureas – Changing dynamics in T2D management</strong><span class="speaker">Dr. Vijay Negalur</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">3:50–4:10 PM</div><div class="talk-col"><strong>Cardiovascular reversal: Is it a possibility in Clinical Practice?</strong><span class="speaker">Dr. Chetan Shah</span></div><div></div></div>
+      <div class="agenda-row special"><div class="time-col">4:10–4:40 PM</div><div class="talk-col"><strong>Panel discussion and dialogue with the delegates</strong><span class="speaker">Panelists: Dr. Zakia Khan / Dr. Amal Kanti Sen / Dr. Santosh Salagre / Dr. Amit Pendharkar</span></div><div></div></div>
+      <div class="agenda-row break-row"><div class="time-col">4:40–5:00 PM</div><div class="talk-col"><strong>☕ Tea break</strong></div><div></div></div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-header">
+        <div class="session-title">Session II</div>
+        <div class="session-chairs">Chairpersons: Dr. Rajan Joseph Manjuran / Dr. Y. P. Sharma / Dr. George Koshy / Dr. George Thayil / Dr. P. K. Sasidharan / Dr. Sanjiv Indurkar</div>
+      </div>
+      <div class="agenda-row"><div class="time-col">5:00–5:10 PM</div><div class="talk-col"><strong>Scope of the session</strong><span class="speaker">Dr. A. L. Dutta, Co-Director of the Hypertension Summit</span></div><button class="qr-btn" onclick="showQR('Session II – Day 1','s2d1')">QR</button></div>
+      <div class="agenda-row"><div class="time-col">5:10–5:30 PM</div><div class="talk-col"><strong>Treatment of Hypertension in Patients with Coronary Artery Disease</strong><span class="speaker">Dr. Ashwani Mehta</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">5:30–5:50 PM</div><div class="talk-col"><strong>Sympathetic overactivity in hypertensive patients: Prevalence and therapeutic implications</strong><span class="speaker">Dr. Sameer Dani</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">5:50–6:10 PM</div><div class="talk-col"><strong>Hypertension, T2D and Dyslipidemia: An unholy nexus</strong><span class="speaker">Dr. S. N. Narasingan</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">6:10–6:30 PM</div><div class="talk-col"><strong>Role of inflammation in cardio-metabolic disease &amp; HCQ in Type 2 Diabetes</strong><span class="speaker">Dr. Aravind R Sosale</span></div><div></div></div>
+      <div class="agenda-row special"><div class="time-col">6:30–7:00 PM</div><div class="talk-col"><strong>Panel discussion and dialogue with the delegates</strong><span class="speaker">Panelists: Dr. Vivek Redkar / Dr. Anand Ahuja / Dr. Sandeep K Gupta / Dr. Sunil Kumar</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">7:00–7:45 PM</div><div class="talk-col"><strong>🏆 Inauguration &amp; World Hypertension League Recognition</strong><span class="speaker">Dr. Ajan Lal Dutta, Dr. G Vijayaraghavan, Dr. Rajan Joseph Manjuran, Dr. Nakul Sinha &amp; distinguished faculty</span></div><div></div></div>
+      <div class="agenda-row break-row"><div class="time-col">7:45 PM+</div><div class="talk-col"><strong>🍽 Dinner</strong></div><div></div></div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-header">
+      <span class="day-icon">🗓</span> Day 2 – Saturday, July 13, 2019
+    </div>
+    <div class="session-block">
+      <div class="session-header">
+        <div class="session-title">Session III</div>
+        <div class="session-chairs">Chairpersons: Dr. Nisar Ahmad Tramboo / Dr. C. M. Verma / Dr. Vidyut Jain / Dr. S. K. Sharma / Dr. H. N. Mishra</div>
+      </div>
+      <div class="agenda-row"><div class="time-col">9:00–9:10 AM</div><div class="talk-col"><strong>Greetings and scope of session</strong><span class="speaker">Dr. Soma Raju B, Co-Director of the Hypertension Summit</span></div><button class="qr-btn" onclick="showQR('Session III – Day 2','s3d2')">QR</button></div>
+      <div class="agenda-row"><div class="time-col">9:10–9:30 AM</div><div class="talk-col"><strong>Classification of BP: ACC AHA 2017 vs. ESH 2018 – How to extrapolate and use in India</strong><span class="speaker">Dr. G S Wander</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">9:30–9:50 AM</div><div class="talk-col"><strong>Ambulatory blood pressure monitoring as a necessary tool in hypertension: Technological improvements</strong><span class="speaker">Dr. C. Venkata S. Ram</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">9:50–10:10 AM</div><div class="talk-col"><strong>Evaluation of newly diagnosed hypertension: Must do and can do</strong><span class="speaker">Dr. A. Sreenivas Kumar</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">10:10–10:30 AM</div><div class="talk-col"><strong>Is kidney the heart of the matter?</strong><span class="speaker">Dr. D Chafekar</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">10:30–10:50 AM</div><div class="talk-col"><strong>Developing STEMI Networking in India</strong><span class="speaker">Dr. Thomas Alexander</span></div><div></div></div>
+      <div class="agenda-row special"><div class="time-col">10:50–11:20 AM</div><div class="talk-col"><strong>Panel discussion and dialogue with the delegates</strong><span class="speaker">Panelists: Dr. Ajith Kumar / Dr. K. K. Verma / Dr. Sunil Thanvi / Dr. Haresh Sidhwa</span></div><div></div></div>
+      <div class="agenda-row break-row"><div class="time-col">11:20–11:40 AM</div><div class="talk-col"><strong>☕ Tea break</strong></div><div></div></div>
+    </div>
+
+    <div class="session-block">
+      <div class="session-header">
+        <div class="session-title">Session IV</div>
+        <div class="session-chairs">Chairpersons: Dr. Aziz Khan / Dr. S. C. Mandal / Dr. P. P. Mohanan / Dr. B. K. Singh / Dr. Arvind Kumar / Dr. S. N. Routray / Dr. J. P. S. Sawhney</div>
+      </div>
+      <div class="agenda-row"><div class="time-col">11:40–11:50 AM</div><div class="talk-col"><strong>Scope of the session</strong><span class="speaker">Dr. C. N Manjunath, Co-Director of the Hypertension Summit</span></div><button class="qr-btn" onclick="showQR('Session IV – Day 2','s4d2')">QR</button></div>
+      <div class="agenda-row"><div class="time-col">11:50 AM–12:10 PM</div><div class="talk-col"><strong>Resistant Hypertension to Heart Failure with preserved Ejection Fraction: A Double Jeopardy – Management Strategies</strong><span class="speaker">Dr. H. K. Chopra</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">12:10–12:30 PM</div><div class="talk-col"><strong>Therapeutic Update</strong><span class="speaker">Dr. C. Venkata S. Ram</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">12:30–1:00 PM</div><div class="talk-col"><strong>Clinical trials leading to rational therapies for hypertension</strong><span class="speaker">Dr. Jackson Wright</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">1:00–1:20 PM</div><div class="talk-col"><strong>Brain attack in hypertension: It's time we are more serious about it</strong><span class="speaker">Dr. S. S. Binu</span></div><div></div></div>
+      <div class="agenda-row special"><div class="time-col">1:20–1:50 PM</div><div class="talk-col"><strong>Panel discussion and dialogue with the delegates</strong><span class="speaker">Panelists: Dr. B. N. Jha / Dr. Prabhat Pandey / Dr. Pravin Kalvit / Dr. A. K. Dass / Dr. S. Manzoor Ali</span></div><div></div></div>
+      <div class="agenda-row break-row"><div class="time-col">1:50 PM</div><div class="talk-col"><strong>🍽 Lunch break</strong></div><div></div></div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-header">
+      <span class="day-icon">🗓</span> Day 3 – Sunday, July 14, 2019
+    </div>
+    <div class="session-block">
+      <div class="session-header">
+        <div class="session-title">Session V</div>
+        <div class="session-chairs">Chairpersons: Dr. B. C. Kalmath / Dr. K. S. Ravindranath / Dr. P. C. Manoria / Dr. A. K. Pancholia / Dr. Prabhat Kumar / Dr. G. L. Sharma</div>
+      </div>
+      <div class="agenda-row"><div class="time-col">9:00–9:10 AM</div><div class="talk-col"><strong>Summary of Day 1 and 2</strong><span class="speaker">Dr. H. K. Chopra</span></div><button class="qr-btn" onclick="showQR('Session V – Day 3','s5d3')">QR</button></div>
+      <div class="agenda-row"><div class="time-col">9:10–9:20 AM</div><div class="talk-col"><strong>Scope of the session</strong><span class="speaker">Dr. G. Vijayaraghavan, Co-Director of the Hypertension Summit</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">9:20–9:40 AM</div><div class="talk-col"><strong>Initial treatment of hypertension – Start with combination therapy: The way forward?</strong><span class="speaker">Dr. T. Govindan Unni</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">9:40–10:00 AM</div><div class="talk-col"><strong>Hypertension urgency: How aggressively should we manage?</strong><span class="speaker">Dr. Sunitha Viswanathan</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">10:00–10:30 AM</div><div class="talk-col"><strong>Impact of anti-hypertensive drugs on the prevention of congestive heart failure</strong><span class="speaker">Dr. Jackson Wright</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">10:30–10:50 AM</div><div class="talk-col"><strong>Hypertension management at 27 vs. 72: How are they different?</strong><span class="speaker">Dr. Rajeev Agarwala</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">10:50–11:10 AM</div><div class="talk-col"><strong>Clinical Research Innovations in Cardio-Metabolic diseases</strong><span class="speaker">Dr. Anil Pareek</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">11:10–11:30 AM</div><div class="talk-col"><strong>PCOS and Hypertension</strong><span class="speaker">Dr. Sarita Bajaj</span></div><div></div></div>
+      <div class="agenda-row"><div class="time-col">11:30 AM–12:30 PM</div><div class="talk-col"><strong>Hypertension Encyclopaedia: All you need to know about Hypertension</strong><span class="speaker">Dr. C. Venkata S. Ram · Panel discussion &amp; delegates</span></div><div></div></div>
+      <div class="agenda-row special"><div class="time-col">12:30–12:45 PM</div><div class="talk-col"><strong>Announcements and farewell messages</strong><span class="speaker">Dr. C. Venkata S. Ram</span></div><div></div></div>
+      <div class="agenda-row break-row"><div class="time-col">12:45 PM</div><div class="talk-col"><strong>🍽 Lunch break and departures</strong></div><div></div></div>
+    </div>
+  </div><!-- end agenda page -->
+
+  <!-- ===== Q&A PAGE ===== -->
+  <div id="page-qa" class="page">
+    <div class="page-hero">
+      <h2>Live Q&A</h2>
+      <p>Post questions for each session · Upvote to push important questions to the top · Scan the session QR code to join</p>
+    </div>
+    <div id="qa-login-notice" class="login-prompt" style="display:none">
+      ⚠️ Please enter your name and email in the bar above to participate in Q&A.
+    </div>
+    <div class="qa-layout">
+      <div class="session-list">
+        <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;">Select session</div>
+        <div class="session-list-item active" onclick="selectSession('s1d1', this)"><div class="si-day">Day 1</div><div class="si-name">Session I</div></div>
+        <div class="session-list-item" onclick="selectSession('s2d1', this)"><div class="si-day">Day 1</div><div class="si-name">Session II</div></div>
+        <div class="session-list-item" onclick="selectSession('s3d2', this)"><div class="si-day">Day 2</div><div class="si-name">Session III</div></div>
+        <div class="session-list-item" onclick="selectSession('s4d2', this)"><div class="si-day">Day 2</div><div class="si-name">Session IV</div></div>
+        <div class="session-list-item" onclick="selectSession('s5d3', this)"><div class="si-day">Day 3</div><div class="si-name">Session V</div></div>
+      </div>
+      <div class="qa-panel">
+        <div class="qa-panel-head">
+          <h2 id="qa-session-title">Session I – Day 1 <span class="qa-count-badge" id="q-count">0</span></h2>
+          <p id="qa-session-sub">Scope, cardiovascular disease, beta blockers, BP elevation, T2D management, cardiovascular reversal</p>
+        </div>
+        <div id="qa-post-area">
+          <div class="post-question">
+            <textarea id="q-input" placeholder="Type your question for the panel..." maxlength="400" oninput="updateCharCount()"></textarea>
+            <div class="post-footer">
+              <span class="char-count" id="char-count">0/400</span>
+              <button class="btn-post" id="btn-post" onclick="postQuestion()">Post Question →</button>
+            </div>
+          </div>
+          <div class="sort-bar">
+            Sort: <button class="sort-btn active" onclick="setSortMode('votes',this)">Most Upvoted</button>
+            <button class="sort-btn" onclick="setSortMode('recent',this)">Most Recent</button>
+          </div>
+        </div>
+        <div id="questions-list"></div>
+      </div>
+    </div>
+  </div><!-- end qa page -->
+
+  <!-- ===== POLLS PAGE ===== -->
+  <div id="page-polls" class="page">
+    <div class="page-hero">
+      <h2>Session Polls</h2>
+      <p>Vote on key clinical questions from each session · Results update in real-time · Scan the session QR code to join</p>
+    </div>
+    <div id="polls-login-notice" class="login-prompt" style="display:none">
+      ⚠️ Please enter your name and email above to participate in polls.
+    </div>
+    <div id="polls-container"></div>
+  </div><!-- end polls page -->
+
+</div><!-- end main -->
+
+<!-- QR MODAL -->
+<div class="modal-overlay" id="qrModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeQR()">✕</button>
+    <h3 id="qr-session-name">Session I</h3>
+    <p>Delegates: scan this QR code to join this session's Q&A and Poll</p>
+    <div id="qr-container"></div>
+    <div class="qr-url" id="qr-url-text"></div>
+  </div>
+</div>
+
+<script>
+// ========================
+// DATA MODEL
+// ========================
+const sessionMeta = {
+  s1d1: { name: 'Session I – Day 1', sub: 'Scope, cardiovascular disease, beta blockers, BP, T2D management' },
+  s2d1: { name: 'Session II – Day 1', sub: 'Hypertension in CAD, sympathetic overactivity, T2D & dyslipidemia, inflammation' },
+  s3d2: { name: 'Session III – Day 2', sub: 'BP classification, ambulatory monitoring, STEMI networking, kidney' },
+  s4d2: { name: 'Session IV – Day 2', sub: 'Resistant hypertension, therapeutic updates, clinical trials, brain attack' },
+  s5d3: { name: 'Session V – Day 3', sub: 'Day 1&2 summary, combination therapy, hypertension urgency, heart failure' }
+};
+
+// questions: { sessionId: [ {id, text, author, email, time, votes, votedBy:[], answered} ] }
+const questions = { s1d1:[], s2d1:[], s3d2:[], s4d2:[], s5d3:[] };
+
+// polls
+const pollsData = [
+  { id:'p1', session:'s1d1', label:'Session I – Day 1', question:'What is your preferred first-line antihypertensive agent for a newly diagnosed hypertensive patient?', options:['ACE Inhibitor / ARB','Calcium Channel Blocker','Thiazide Diuretic','Beta Blocker','Combination from start'], votes:[0,0,0,0,0], voted:{} },
+  { id:'p2', session:'s1d1', label:'Session I – Day 1', question:'Do beta blockers still have a role as primary antihypertensive therapy in 2019?', options:['Yes, as monotherapy','Yes, in selected cases only','No, replaced by newer agents','Unsure'], votes:[0,0,0,0], voted:{} },
+  { id:'p3', session:'s2d1', label:'Session II – Day 1', question:'What BP target do you set for hypertensive patients with established CAD?', options:['<140/90 mmHg','<130/80 mmHg','<120/80 mmHg','Individualised per patient'], votes:[0,0,0,0], voted:{} },
+  { id:'p4', session:'s2d1', label:'Session II – Day 1', question:'How often do you formally screen for dyslipidemia in your hypertensive patients?', options:['Every visit','Annually','Every 2–3 years','Only when symptomatic'], votes:[0,0,0,0], voted:{} },
+  { id:'p5', session:'s3d2', label:'Session III – Day 2', question:'Which BP classification do you primarily follow in your clinical practice in India?', options:['ACC/AHA 2017','ESH/ESC 2018','JNC 8','Indian guidelines'], votes:[0,0,0,0], voted:{} },
+  { id:'p6', session:'s3d2', label:'Session III – Day 2', question:'How available is ambulatory BP monitoring (ABPM) at your facility?', options:['Readily available','Available on referral','Not available','I send patients elsewhere'], votes:[0,0,0,0], voted:{} },
+  { id:'p7', session:'s4d2', label:'Session IV – Day 2', question:'What is your approach to resistant hypertension (3+ drugs at max doses, still uncontrolled)?', options:['Add mineralocorticoid antagonist','Refer to specialist','Investigate secondary causes first','Reassess medication adherence first'], votes:[0,0,0,0], voted:{} },
+  { id:'p8', session:'s4d2', label:'Session IV – Day 2', question:'How often do you discuss stroke risk specifically with your hypertensive patients?', options:['Always','Usually','Sometimes','Rarely'], votes:[0,0,0,0], voted:{} },
+  { id:'p9', session:'s5d3', label:'Session V – Day 3', question:'Should combination therapy be the standard initial treatment for stage 2 hypertension?', options:['Yes, always','Yes, in high-CV-risk patients','No, start monotherapy and titrate','Depends on BP level only'], votes:[0,0,0,0], voted:{} },
+  { id:'p10', session:'s5d3', label:'Session V – Day 3', question:'Rate today\'s overall CME programme quality', options:['Excellent','Very Good','Good','Fair','Needs improvement'], votes:[0,0,0,0,0], voted:{} }
+];
+
+let delegate = null;
+let currentSession = 's1d1';
+let sortMode = 'votes';
+
+// ========================
+// DELEGATE AUTH
+// ========================
+function loginDelegate() {
+  const name = document.getElementById('delegateName').value.trim();
+  const email = document.getElementById('delegateEmail').value.trim();
+  if (!name || !email || !email.includes('@')) {
+    alert('Please enter a valid name and email address.');
+    return;
+  }
+  delegate = { name, email, initials: name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2) };
+  const bar = document.getElementById('delegateBar');
+  bar.classList.add('logged-in');
+  bar.innerHTML = `
+    <div class="delegate-info">
+      <div class="delegate-avatar">${delegate.initials}</div>
+      <span style="font-weight:600;font-size:13px;">${delegate.name}</span>
+      <span style="font-size:12px;color:var(--muted);">${delegate.email}</span>
+    </div>
+    <span style="margin-left:auto;font-size:12px;color:var(--success);font-weight:600;">✓ Joined as delegate</span>
+    <button class="btn-logout" onclick="logoutDelegate()">Leave</button>
+  `;
+  document.getElementById('qa-login-notice').style.display = 'none';
+  document.getElementById('polls-login-notice').style.display = 'none';
+  renderQuestions();
+  renderPolls();
+}
+
+function logoutDelegate() {
+  delegate = null;
+  location.reload();
+}
+
+// ========================
+// PAGE NAVIGATION
+// ========================
+function showPage(id, btn) { showPageById(id); }
+
+// ========================
+// SESSION SELECTION
+// ========================
+function selectSession(id, el) {
+  currentSession = id;
+  document.querySelectorAll('.session-list-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  const meta = sessionMeta[id];
+  document.getElementById('qa-session-title').innerHTML = meta.name + ' <span class="qa-count-badge" id="q-count">0</span>';
+  document.getElementById('qa-session-sub').textContent = meta.sub;
+  renderQuestions();
+}
+
+// ========================
+// Q&A
+// ========================
+function updateCharCount() {
+  const v = document.getElementById('q-input').value;
+  document.getElementById('char-count').textContent = v.length + '/400';
+}
+
+function postQuestion() {
+  if (!delegate) { alert('Please join as a delegate first.'); return; }
+  const text = document.getElementById('q-input').value.trim();
+  if (!text) return;
+  const qs = questions[currentSession];
+  if (qs.length >= 20) { alert('Maximum of 20 questions reached for this session.'); return; }
+  qs.push({
+    id: Date.now(),
+    text,
+    author: delegate.name,
+    email: delegate.email,
+    time: new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}),
+    votes: 0,
+    votedBy: [],
+    answered: false
+  });
+  document.getElementById('q-input').value = '';
+  updateCharCount();
+  renderQuestions();
+}
+
+function upvoteQuestion(sessionId, qId) {
+  if (!delegate) { alert('Please join as a delegate first.'); return; }
+  const q = questions[sessionId].find(x => x.id === qId);
+  if (!q) return;
+  const idx = q.votedBy.indexOf(delegate.email);
+  if (idx === -1) { q.votes++; q.votedBy.push(delegate.email); }
+  else { q.votes--; q.votedBy.splice(idx, 1); }
+  renderQuestions();
+}
+
+function markAnswered(sessionId, qId) {
+  const q = questions[sessionId].find(x => x.id === qId);
+  if (q) { q.answered = !q.answered; renderQuestions(); }
+}
+
+function setSortMode(mode, btn) {
+  sortMode = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderQuestions();
+}
+
+function renderQuestions() {
+  const list = document.getElementById('questions-list');
+  const qs = [...questions[currentSession]];
+  const countEl = document.getElementById('q-count');
+  if (countEl) countEl.textContent = qs.length + '/20';
+
+  if (sortMode === 'votes') qs.sort((a,b) => b.votes - a.votes);
+  else qs.sort((a,b) => b.id - a.id);
+
+  if (qs.length === 0) {
+    list.innerHTML = '<div class="no-session-msg">No questions yet for this session.<br>Be the first to ask!</div>';
+    return;
+  }
+
+  list.innerHTML = qs.map(q => {
+    const voted = delegate && q.votedBy.includes(delegate.email);
+    return `
+    <div class="question-card" id="qcard-${q.id}">
+      <div class="upvote-col">
+        <button class="upvote-btn ${voted?'voted':''}" onclick="upvoteQuestion('${currentSession}', ${q.id})" title="${voted?'Remove upvote':'Upvote this question'}">▲</button>
+        <span class="upvote-count">${q.votes}</span>
+      </div>
+      <div class="q-body">
+        <div class="q-text">${escHtml(q.text)}</div>
+        <div class="q-meta">
+          <span class="q-author-chip">👤 ${escHtml(q.author)}</span>
+          <span class="q-time">🕐 ${q.time}</span>
+          ${q.answered ? '<span class="answered-badge">✓ Answered</span>' : ''}
+          <button class="btn-mark-answered" onclick="markAnswered('${currentSession}', ${q.id})">${q.answered ? 'Unmark' : 'Mark answered'}</button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function escHtml(s) { return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+// ========================
+// POLLS
+// ========================
+function renderPolls() {
+  const container = document.getElementById('polls-container');
+  container.innerHTML = '';
+
+  // Group by session
+  const groups = {};
+  pollsData.forEach(p => {
+    if (!groups[p.session]) groups[p.session] = [];
+    groups[p.session].push(p);
+  });
+
+  Object.keys(groups).forEach(sid => {
+    const meta = sessionMeta[sid];
+    const div = document.createElement('div');
+    div.innerHTML = `<div class="day-header" style="margin-top:1.5rem;margin-bottom:1rem;">📊 ${meta.name}</div>`;
+    container.appendChild(div);
+
+    groups[sid].forEach(poll => {
+      const total = poll.votes.reduce((a,b)=>a+b,0);
+      const hasVoted = delegate && poll.voted[delegate.email] !== undefined;
+      const myVote = hasVoted ? poll.voted[delegate.email] : -1;
+
+      const card = document.createElement('div');
+      card.className = 'poll-card';
+      card.id = 'poll-' + poll.id;
+
+      const optionsHtml = poll.options.map((opt, i) => {
+        const pct = total > 0 ? Math.round((poll.votes[i]/total)*100) : 0;
+        const isSelected = myVote === i;
+        return `
+        <div class="poll-option">
+          <button class="poll-option-btn ${isSelected?'selected':''}" onclick="votePoll('${poll.id}', ${i})">
+            <div class="poll-bar" style="width:${hasVoted?pct:0}%"></div>
+            <div class="poll-label">
+              <span>${opt}</span>
+              ${hasVoted ? `<span class="poll-pct">${pct}%</span>` : ''}
+            </div>
+          </button>
+        </div>`;
+      }).join('');
+
+      card.innerHTML = `
+        <h3>${poll.question}</h3>
+        <div class="poll-session">${poll.label}</div>
+        ${!delegate ? '<div class="alert alert-warn" style="margin-bottom:.75rem;font-size:12px;">⚠️ Login above to vote</div>' : ''}
+        ${optionsHtml}
+        <div class="poll-footer">${total} vote${total!==1?'s':''} · ${hasVoted?'You voted':'Tap an option to vote'}</div>
+      `;
+      container.appendChild(card);
+    });
+  });
+}
+
+function votePoll(pollId, optIdx) {
+  if (!delegate) { alert('Please join as a delegate first.'); return; }
+  const poll = pollsData.find(p => p.id === pollId);
+  if (!poll) return;
+  const prev = poll.voted[delegate.email];
+  if (prev !== undefined) poll.votes[prev]--;
+  poll.votes[optIdx]++;
+  poll.voted[delegate.email] = optIdx;
+  renderPolls();
+}
+
+// ========================
+// PAGE NAVIGATION (fixed)
+// ========================
+function showPageById(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  const tabMap = { agenda: 0, qa: 1, polls: 2 };
+  const tabs = document.querySelectorAll('.nav-tab');
+  if (tabs[tabMap[id]]) tabs[tabMap[id]].classList.add('active');
+  if (id === 'qa') {
+    if (!delegate) document.getElementById('qa-login-notice').style.display = 'block';
+    renderQuestions();
+  }
+  if (id === 'polls') {
+    if (!delegate) document.getElementById('polls-login-notice').style.display = 'block';
+    renderPolls();
+  }
+}
+
+// ========================
+// QR CODE
+// ========================
+let qrInstance = null;
+function showQR(sessionName, sessionId) {
+  document.getElementById('qr-session-name').textContent = sessionName;
+
+  // Build a self-contained URL that works when the file is served or opened locally
+  const base = (location.protocol === 'file:')
+    ? 'https://hypertension-summit-2019.local/cme'  // placeholder shown when opened as file
+    : (location.origin + location.pathname);
+  const url = base + '?session=' + sessionId;
+
+  document.getElementById('qr-url-text').textContent = url;
+  document.getElementById('qr-container').innerHTML = '';
+  qrInstance = new QRCode(document.getElementById('qr-container'), {
+    text: url,
+    width: 210,
+    height: 210,
+    colorDark: '#0A2342',
+    colorLight: '#ffffff',
+    correctLevel: QRCode.CorrectLevel.M
+  });
+  document.getElementById('qrModal').classList.add('open');
+}
+
+function closeQR() {
+  document.getElementById('qrModal').classList.remove('open');
+}
+
+document.getElementById('qrModal').addEventListener('click', function(e) {
+  if (e.target === this) closeQR();
+});
+
+// ========================
+// SCAN LANDING — show join modal if arrived via QR
+// ========================
+function handleScanLanding(sessionId) {
+  // Show a prominent join modal for delegates arriving via QR scan
+  const meta = sessionMeta[sessionId];
+  const overlay = document.createElement('div');
+  overlay.id = 'scan-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(10,35,66,0.82);z-index:2000;display:flex;align-items:center;justify-content:center;';
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:20px;padding:2.5rem 2rem;max-width:400px;width:92%;text-align:center;position:relative;">
+      <div style="width:56px;height:56px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M22 12h-4l-3 9L9 3l-3 9H2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--teal);font-weight:700;margin-bottom:6px;">World Hypertension Summit 2019</div>
+      <h2 style="font-size:20px;font-weight:700;color:var(--navy);margin-bottom:4px;">Welcome, Delegate!</h2>
+      <p style="font-size:13px;color:var(--muted);margin-bottom:6px;">You've joined:</p>
+      <div style="background:var(--teal-light);border:1px solid #b2dfdb;border-radius:10px;padding:10px 16px;margin-bottom:1.5rem;">
+        <div style="font-weight:700;color:var(--navy);font-size:15px;">${meta.name}</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px;">${meta.sub}</div>
+      </div>
+      <p style="font-size:13px;color:var(--text);margin-bottom:1rem;font-weight:500;">Enter your details to participate in Q&amp;A and Polls</p>
+      <input id="scan-name" type="text" placeholder="Full name" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;font-family:inherit;margin-bottom:10px;color:var(--text);" />
+      <input id="scan-email" type="email" placeholder="Email address" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 14px;font-size:14px;font-family:inherit;margin-bottom:1rem;color:var(--text);" />
+      <button onclick="joinFromScan('${sessionId}')" style="width:100%;background:var(--teal);color:#fff;border:none;border-radius:10px;padding:12px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;">Join Session →</button>
+      <button onclick="document.getElementById('scan-overlay').remove()" style="margin-top:10px;background:none;border:none;font-size:13px;color:var(--muted);cursor:pointer;font-family:inherit;">Skip for now</button>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  setTimeout(() => { const n = document.getElementById('scan-name'); if(n) n.focus(); }, 100);
+}
+
+function joinFromScan(sessionId) {
+  const name = document.getElementById('scan-name').value.trim();
+  const email = document.getElementById('scan-email').value.trim();
+  if (!name || !email || !email.includes('@')) {
+    alert('Please enter a valid name and email address.');
+    return;
+  }
+  document.getElementById('scan-overlay').remove();
+  // Populate and trigger login
+  document.getElementById('delegateName').value = name;
+  document.getElementById('delegateEmail').value = email;
+  loginDelegate();
+}
+
+// ========================
+// INIT — handle URL params on load
+// ========================
+window.addEventListener('DOMContentLoaded', () => {
+  renderQuestions();
+  renderPolls();
+
+  const params = new URLSearchParams(window.location.search);
+  const session = params.get('session');
+  if (session && sessionMeta[session]) {
+    currentSession = session;
+    // Navigate to Q&A tab
+    showPageById('qa');
+    // Highlight correct session in list
+    document.querySelectorAll('.session-list-item').forEach(el => {
+      el.classList.remove('active');
+      if (el.getAttribute('onclick') && el.getAttribute('onclick').includes(session)) {
+        el.classList.add('active');
+      }
+    });
+    // Update Q&A panel header
+    const meta = sessionMeta[session];
+    document.getElementById('qa-session-title').innerHTML = meta.name + ' <span class="qa-count-badge" id="q-count">0</span>';
+    document.getElementById('qa-session-sub').textContent = meta.sub;
+    renderQuestions();
+    // Show join modal for scanned delegates
+    handleScanLanding(session);
+  }
+});
+</script>
+</body>
+</html>
